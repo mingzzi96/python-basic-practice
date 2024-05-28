@@ -4,17 +4,66 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      .lotto-numbers {
+        display: flex;
+        flex-wrap: wrap;
+        width: 300px;
+      }
+
+      .number {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 5px;
+      }
+
+      .number:nth-child(1) {
+        background-color: #ffcc00;
+      }
+
+      .number:nth-child(2) {
+        background-color: #ff6666;
+      }
+
+      .number:nth-child(3) {
+        background-color: #99cc00;
+      }
+
+      .number:nth-child(4) {
+        background-color: #0099cc;
+      }
+
+      .number:nth-child(5) {
+        background-color: #ff99cc;
+      }
+
+      .number:nth-child(6) {
+        background-color: #9966ff;
+      }
+    </style>
   </head>
   <body>
     <h1>안녕하세요, {{ data.name }}님</h1>
-    <h1>로또 번호는, {{ data.lotto }}</h1>
-    <h1>랜덤 로또 번호는, {{ data.random_lotto }}</h1>
+    <h1>로또 번호는,</h1>
     <!-- ! flask에서는 for문을 이렇게 쓴다... 충격 -->
-    <!-- <ol>
+    <ol class="lotto-numbers">
       {% for element in data.lotto %}
-      <li>{{element|e}}</li>
+      <li class="number">{{element|e}}</li>
       {% endfor %}
-    </ol> -->
+    </ol>
+    <h1>랜덤 로또 번호는,</h1>
+    <ol class="lotto-numbers">
+      {% for element in data.random_lotto %}
+      <li class="number">{{element|e}}</li>
+      {% endfor %}
+    </ol>
 
     <!-- ? 당첨 갯수에 따라 메시지 표시 -->
     {% if data.common_count == 6 %}
