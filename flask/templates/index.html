@@ -8,11 +8,25 @@
   <body>
     <h1>안녕하세요, {{ data.name }}님</h1>
     <h1>로또 번호는, {{ data.lotto }}</h1>
+    <h1>랜덤 로또 번호는, {{ data.random_lotto }}</h1>
     <!-- ! flask에서는 for문을 이렇게 쓴다... 충격 -->
-    <ol>
+    <!-- <ol>
       {% for element in data.lotto %}
       <li>{{element|e}}</li>
       {% endfor %}
-    </ol>
+    </ol> -->
+
+    <!-- ? 당첨 갯수에 따라 메시지 표시 -->
+    {% if data.common_count == 6 %}
+    <h2>{{ data.common_count }}개 맞았습니다. 1등 입니다!</h2>
+    {% elif data.common_count == 5 %}
+    <h2>{{ data.common_count }}개 맞았습니다. 2등 입니다!</h2>
+    {% elif data.common_count == 4 %}
+    <h2>{{ data.common_count }}개 맞았습니다. 3등 입니다!</h2>
+    {% else %}
+    <h2>
+      {{ data.common_count }}개 맞았습니다. 아쉽지만 다음 기회를 노려보세요.
+    </h2>
+    {% endif %}
   </body>
 </html>
