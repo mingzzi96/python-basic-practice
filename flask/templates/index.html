@@ -8,5 +8,11 @@
   <body>
     <h1>안녕하세요, {{ data.name }}님</h1>
     <h1>로또 번호는, {{ data.lotto }}</h1>
+    <!-- ! flask에서는 for문을 이렇게 쓴다... 충격 -->
+    <ol>
+      {% for element in data.lotto %}
+      <li>{{element|e}}</li>
+      {% endfor %}
+    </ol>
   </body>
 </html>
