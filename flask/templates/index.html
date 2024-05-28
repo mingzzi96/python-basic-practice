@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      img {
+        max-width: 200px;
+      }
       .lotto-numbers {
         display: flex;
         flex-wrap: wrap;
@@ -51,6 +54,7 @@
   </head>
   <body>
     <h1>안녕하세요, {{ data.name }}님</h1>
+    <img src="{{ url_for('static', filename='coinman.png')}}" alt="코인맨" />
     <h1>로또 번호는,</h1>
     <!-- ! flask에서는 for문을 이렇게 쓴다... 충격 -->
     <ol class="lotto-numbers">
