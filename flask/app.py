@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from datetime import datetime, timedelta
 import random
 import requests
 
@@ -46,13 +47,36 @@ def mypage():
 @app.route('/movie')
 def movie():
     query = request.args.get('query')
-    res = requests.get(
-	f"http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=f5eef3421c602c6cb7ea224104795888&movieNm={query}"
-    )
+
+    URL = f"http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=f5eef3421c602c6cb7ea224104795888&movieNm={query}"
+    res = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
+    
     rjson = res.json()
     movie_list = rjson["movieListResult"]["movieList"]
     print(movie_list)
     return render_template('movie.html', data=movie_list)
 
+@app.route("/boxoffice")
+def boxoffice():
+    # 현재 날짜에서 7일 전 날짜를 계산
+    seven_days_ago = datetime.now() - timedelta(days=7)
+    default_query = seven_days_ago.strftime('%Y%m%d')
+
+    if request.args.get('query'):
+        query = request.args.get('query')
+    else:
+        query = default_query
+
+    URL = f"http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt={query}"
+
+    res = requests.get(URL, headers={"User-Agent": "Mozilla/5.0"})
+
+    rjson = res.json()
+    movie_list = rjson.get("boxOfficeResult").get("weeklyBoxOfficeList")
+
+    return render_template("boxoffice.html", data=movie_list)
+
 if __name__ == '__main__':  
     app.run(debug=True)
+
+    
