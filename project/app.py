@@ -3,7 +3,7 @@
 0. Flask : 웹서버를 시작할 수 있는 기능. app이라는 이름으로 플라스크를 시작한다
 1. render_template : html파일을 가져와서 보여준다
 '''
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 # db 기본 코드
@@ -47,6 +47,12 @@ def music():
     song_list = Song.query.all()
     return render_template('music.html', data=song_list)
 
+@app.route("/music/<username>/")
+def render_music_filter(username):
+    # username과 동일한 아이템이 filter될 수 있도록
+    filter_list = Song.query.filter_by(username = username).all()
+    return render_template('music.html', data=filter_list)
+
 @app.route("/iloveyou/<name>")
 def iloveyou(name):
     motto = f"{name}야 사랑해!"
@@ -70,7 +76,7 @@ def music_create():
     db.session.add(song)
     db.session.commit()
 
-    return render_template('music.html')
+    return redirect(url_for('render_music_filter', username=username_receive))
 
 
 if __name__ == "__main__":
