@@ -13,9 +13,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] =\
-        'sqlite:///' + os.path.join(basedir, 'database.db')
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
+app.secret_key = os.urandom(24)
 db = SQLAlchemy(app)
 
 class Song(db.Model):
@@ -77,6 +76,13 @@ def music_create():
     db.session.commit()
 
     return redirect(url_for('render_music_filter', username=username_receive))
+
+@app.route('/delete/<int:song_id>', methods=['POST'])
+def delete_song(song_id):
+    song = Song.query.get_or_404(song_id)
+    db.session.delete(song)
+    db.session.commit()
+    return redirect(url_for('music'))
 
 
 if __name__ == "__main__":
